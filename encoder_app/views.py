@@ -18,7 +18,6 @@ def port_number(request):
     if not request.is_websocket():  # 判断是不是websocket连接
         try:  # 如果是普通的http方法
             message = request.GET['message']
-            print("11")
             return HttpResponse(message)
         except:
             return render(request, 'login.html')
@@ -27,7 +26,6 @@ def port_number(request):
         if len(plist) <= 0:
             print("没有发现端口!")
         else:
-            print("1")
             port = []
             for PLIST in list(plist):
                 port.append(PLIST[0])
