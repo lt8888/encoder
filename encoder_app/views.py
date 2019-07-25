@@ -258,3 +258,6 @@ def stop(req):
         print("stop异常", e)
     data = json.dumps(state)
     return HttpResponse(data)
+
+
+#  提交失败，重新提交
