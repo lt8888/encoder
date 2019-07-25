@@ -32,20 +32,24 @@
         width: 150px;height: 640px;margin: 0 auto;margin-top:8px;float: left;margin-left: 15px;
     }
     .lt-1_3-1{
-        width: 600px; float: left; position:absolute;top: 340px;margin-left: 65px;display: none;
+        width: 600px; float: left; margin-left: 65px;display: none;
+    }
+    .lt-1_3s{
+        width: 710px; height:300px;float: left;
+        position:absolute;top: 340px;
     }
     .lt-1_3{
-        width: 350px; float: left; position:absolute;top: 340px;left: 230px;
+        width: 350px; float: left;
     }
     .lt-1_4{
-        width: 350px;float: left; position:absolute;top: 340px;left: 575px;
+        width: 350px;float: left;
     }
     .lt-1_5{
         width: 700px;height: 300px; float: left; position:absolute;top: 50px;margin-left:15px;
     }
     .btn-primary {
-        color: #fff;
-        background-color: #31b0d5;
+        color: #000000;
+        background-color: #ffffff;
         border-color: #2e6da4;
     }
 </style>
@@ -108,32 +112,34 @@
             <button type="button" style="width: 82%;margin-left: 15px;margin-top: 5px;" class="btn btn-default" id="send_message">开始采集</button>
             <button type="button" style="width: 82%;margin-left: 15px;margin-top: 5px;" class="btn btn-default" id="stop">停止采集</button>
         </div>
-        <button type="button" style="width: 82%;margin-left: 15px;margin-top: 5px;" class="btn btn-default">
-                <a id="test12" onclick="clickDownload(this)"   href="#">保存数据</a>
+        <button type="button" style="width: 82%;margin-left: 15px;margin-top: 5px;" class="btn btn-default" id="baocun">
+            <a id="test12" onclick="clickDownload(this)"   href="#">保存数据</a>
         </button>
     </div>
-    <div class="lt-1_3-1 titleDiv table_out" id = "c3_1" style="">
-        <table class="table tableTop table-hover">
-            <thead>
-            <tr class="tableTh">
-                <th>ID</th>
-                <th>通道1圈数值</th>
-                <th>通道1角度值</th>
-                <th>通道2圈数值</th>
-                <th>通道2角度值</th>
-            </tr>
-            </thead>
+    <div class="lt-1_3s">
+        <div class="lt-1_3-1 titleDiv table_out" id = "c3_1" style="">
+            <table class="table tableTop table-hover">
+                <thead>
+                <tr class="tableTh">
+                    <th>ID</th>
+                    <th>通道1圈数值</th>
+                    <th>通道1角度值</th>
+                    <th>通道2圈数值</th>
+                    <th>通道2角度值</th>
+                </tr>
+                </thead>
 
-            <tbody id="DataBits">
+                <tbody id="DataBits">
 
-            </tbody>
-        </table>
-    </div>
-    <div class="lt-1_3"  id="c1">
-        <div id="mountNode"></div>
-    </div>
-    <div class="lt-1_4" id="c2" >
-        <div id="mountNode_2"></div>
+                </tbody>
+            </table>
+        </div>
+        <div class="lt-1_3"  id="c1">
+            <div id="mountNode"></div>
+        </div>
+        <div class="lt-1_4" id="c2" >
+            <div id="mountNode_2"></div>
+        </div>
     </div>
     <div class="lt-1_5">
         <div style="float: left;width: 46%;height: 90%;margin-left: 15px;margin-top: 15px;">
@@ -169,7 +175,6 @@
             </div>
         </div>
     </div>
-
 </div>
 
 
@@ -188,7 +193,7 @@
         height : 350 // 指定图表高度
     });chart.source(data, {time: {alias: '时间', tickCount: 10, nice: false}, temperature: {alias: '数据', min: 0, type:'linear'}, type: {
             type: 'cat'
-        }});chart.line().position('time*temperature').color('type', ['#ff7f0e', '#2ca02c']).shape('smooth').size(2);chart.render();
+        }});chart.line().position('time*temperature').color('type', ['#31b0d5', '#3e8f3e']).shape('smooth').size(2);chart.render();
     var data_2 = [];var chart_2 = new G2.Chart({
         container: 'mountNode_2',
         forceFit: true,
@@ -196,7 +201,7 @@
         height : 350 // 指定图表高度
     });chart_2.source(data_2, {time: {alias: '时间', tickCount: 10, nice: false}, temperature: {alias: '数据', min: 0, type:'linear'}, type: {
             type: 'cat'
-        }});chart_2.line().position('time*temperature').color('type', ['#DC143C','#4169E1']).shape('smooth').size(2);chart_2.render();
+        }});chart_2.line().position('time*temperature').color('type', ['#31b0d5','#3e8f3e']).shape('smooth').size(2);chart_2.render();
 
     openSocket()
     function openSocket() {
@@ -368,18 +373,20 @@
                 *单连续：3
                 *单定次：4
                 */
-                clera_data()
-                $("#send_message").attr("disabled", "true");
-                $("#close_websocket").attr("disabled", "true");
                 if($("input[name='options']:checked").val()==1){
                     // 双通道
                     if($("input[name='options2']:checked").val()==3){
                         // 连续
+                        clera_data()
+                        $("#send_message").attr("disabled", "true");$("#close_websocket").attr("disabled", "true");$("#close_1").attr("disabled", "true");$("#view_data").attr("disabled", "true");$("#baocun").attr("disabled", "true");
                         dataMessage.push(1)
                         window.s.send(dataMessage);//通过websocket发送数据
                     }else if ($("input[name='options2']:checked").val()==4) {
                         // 定次
                         if($("#next").val()>0 && $("#next").val()<65536){
+                            clera_data()
+                            $("#send_message").attr("disabled", "true");$("#close_websocket").attr("disabled", "true");$("#close_1").attr("disabled", "true");$("#view_data").attr("disabled", "true");$("#baocun").attr("disabled", "true");
+
                             dataMessage.push(2)
                             dataMessage.push($("#next").val())
                             window.s.send(dataMessage);//通过websocket发送数据
@@ -395,11 +402,17 @@
                     // 单通道
                     if($("input[name='options2']:checked").val()==3){
                         // 连续
+                        clera_data()
+                        $("#send_message").attr("disabled", "true");$("#close_websocket").attr("disabled", "true");$("#close_1").attr("disabled", "true");$("#view_data").attr("disabled", "true");$("#baocun").attr("disabled", "true");
+
                         dataMessage.push(3)
                         window.s.send(dataMessage);//通过websocket发送数据
                     }else if ($("input[name='options2']:checked").val()==4) {
                         // 定次
                         if($("#next").val()>0 && $("#next").val()<65536){
+                            clera_data()
+                            $("#send_message").attr("disabled", "true");$("#close_websocket").attr("disabled", "true");$("#close_1").attr("disabled", "true");$("#view_data").attr("disabled", "true");$("#baocun").attr("disabled", "true");
+
                             dataMessage.push(4)
                             dataMessage.push($("#next").val())
                             window.s.send(dataMessage);//通过websocket发送数据
@@ -416,7 +429,6 @@
                 //clera_data();
             }
         });
-
         // 关闭websocket
         $('#close_websocket').click(function () {
             if (window.s) {
@@ -438,11 +450,10 @@
             success:function (data) {
                 if (data.message==1){
                     showMsg("停止成功")
-                    $("#send_message").removeAttr("disabled")
-                    $("#close_websocket").removeAttr("disabled")
+                    $("#send_message").removeAttr("disabled");$("#close_websocket").removeAttr("disabled");$("#close_1").removeAttr("disabled");$("#view_data").removeAttr("disabled");$("#baocun").removeAttr("disabled");
+
                 }else {
-                    $("#send_message").removeAttr("disabled")
-                    $("#close_websocket").removeAttr("disabled")
+                    $("#send_message").removeAttr("disabled");$("#close_websocket").removeAttr("disabled");$("#close_1").removeAttr("disabled");$("#view_data").removeAttr("disabled");$("#baocun").removeAttr("disabled");
                     showMsg("已经停止")
                 }
             },error:function () {
@@ -453,7 +464,7 @@
     });
 
     // 查看数据
-     $("#view_data").click(function(){
+    $("#view_data").click(function(){
         $("#DataBits").html("")
         $("#view_data").attr("disabled", "true");
         $("#view_chart").removeAttr("disabled")
@@ -467,7 +478,7 @@
         $("#DataBits").append(str)
     })
 
-        // 查看图表
+    // 查看图表
     $("#view_chart").click(function(){
         $("#view_chart").attr("disabled", "true");
         $("#view_data").removeAttr("disabled")
@@ -476,7 +487,7 @@
         $("#c3_1").hide()
     })
 
-        // 下载数据
+    // 下载数据
     function clickDownload(aLink)
     {
         init_lt()
@@ -487,7 +498,7 @@
         str =  encodeURIComponent(str);
         aLink.href = "data:text/csv;charset=utf-8,\ufeff"+str;
     }
-     function init_lt(){
+    function init_lt(){
         var myDate = new Date();
         var dateTime = myDate.toLocaleString('chinese', { hour12: false });
         $("#test12").attr("download",""+dateTime+".csv")
