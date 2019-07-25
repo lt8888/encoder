@@ -8,23 +8,40 @@
     <link href="../static/bootstrap-3.3.7-dist/css/bootstrap.css" rel="stylesheet" />
 </head>
 <style>
+    table tbody{
+        display: block;
+        height: 275px;
+        overflow-y: scroll;
+        text-align: center;
+    }
+    th{
+        text-align: center;
+    }
+    table thead, tbody tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+    }
     .lt-1{
         width: 900px;height: 656px;margin: 0 auto;border:1px solid #8181F7
     }
     .lt-1_1{
-        width: 700px;height: 50px;margin: 0 auto;margin-top:8px;float: left;border:1px solid #000;margin-left: 15px;
+        width: 700px;height: 50px;margin: 0 auto;margin-top:8px;float: left;margin-left: 15px;
     }
     .lt-1_2{
-        width: 150px;height: 640px;margin: 0 auto;margin-top:8px;float: left;border:1px solid #000;margin-left: 15px;
+        width: 150px;height: 640px;margin: 0 auto;margin-top:8px;float: left;margin-left: 15px;
+    }
+    .lt-1_3-1{
+        width: 600px; float: left; position:absolute;top: 340px;margin-left: 65px;display: none;
     }
     .lt-1_3{
-        width: 350px; float: left; position:absolute;top: 380px;left: 230px;
+        width: 350px; float: left; position:absolute;top: 340px;left: 230px;
     }
     .lt-1_4{
-        width: 350px;float: left; position:absolute;top: 380px;left: 550px
+        width: 350px;float: left; position:absolute;top: 340px;left: 575px;
     }
     .lt-1_5{
-        width: 700px;height: 300px; float: left; position:absolute;top: 80px;border:1px solid #000;margin-left:15px;
+        width: 700px;height: 300px; float: left; position:absolute;top: 50px;margin-left:15px;
     }
     .btn-primary {
         color: #fff;
@@ -33,6 +50,24 @@
     }
 </style>
 <body>
+<div id="com-alert" class="modal" style="z-index:9999;display: none;" >
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h5 class="modal-title"><i class="fa fa-exclamation-circle"></i> [Title]</h5>
+            </div>
+            <div class="modal-body small">
+                <p>[Message]</p>
+            </div>
+            <div class="modal-footer" >
+                <button type="button" class="btn btn-primary ok" data-dismiss="modal">[BtnOk]</button>
+                <button type="button" class="btn btn-default cancel" data-dismiss="modal">[BtnCancel]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="lt-1">
     <div class="lt-1_1">
         <div style="float: left;margin-left: 2px;margin-top: 5px;"><img src="../static/img/sparktag.jpg"width="35px"height="35px"></div>
@@ -43,8 +78,8 @@
         <select class="form-control" style="margin-left: 15px;margin-top: 5px;width: 82%;" id="ComName">
         </select>
         <div class="btn-group" role="group" aria-label="..." style="margin-left: 15px;margin-top: 5px;width: 82%;">
-            <button type="button" class="btn btn-default" style="width: 50%;">打开</button>
-            <button type="button" class="btn btn-default" style="width: 50%;">关闭</button>
+            <button type="button" class="btn btn-default" style="width: 50%;" id = "open_1">打开</button>
+            <button type="button" class="btn btn-default" style="width: 50%;" id = "close_1">关闭</button>
         </div>
         <h5 style="margin-left: 15px;margin-top: 5px">采集通道</h5>
         <div class="btn-group" data-toggle="buttons" id="radio">
@@ -58,22 +93,41 @@
         <h5 style="margin-left: 15px;margin-top: 5px">采集通道</h5>
         <div class="btn-group" data-toggle="buttons" id="radio">
             <label class="btn btn-primary" style="margin-left: 15px;width: 82%;">
-                <input type="radio" name="options" id="options3" value="3">连续采集
+                <input type="radio" name="options2" id="options3" value="3">连续采集
             </label>
             <label class="btn btn-primary"  style="margin-left: 15px;margin-top: 5px;width: 82%;">
-                <input type="radio" name="options" id="options4" value="4">定次采集
+                <input type="radio" name="options2" id="options4" value="4">定次采集
             </label>
             <label style="width: 66%;margin-left: 15px;margin-top: 5px;width: 82%;">
-                <input type="number"  class="form-control" aria-label="...">
+                <input type="number"  class="form-control" aria-label="..." id = "next">
             </label>
-            <button type="button" style="width: 82%;margin-left: 15px;margin-top: 5px;" class="btn btn-default">打开连接</button>
-            <button type="button" style="width: 82%;margin-left: 15px;margin-top: 5px;" class="btn btn-default">关闭连接</button>
-            <button type="button" style="width: 82%;margin-left: 15px;margin-top: 5px;" class="btn btn-default">参数设置</button>
-            <button type="button" style="width: 82%;margin-left: 15px;margin-top: 5px;" class="btn btn-default">查看数据</button>
-            <button type="button" style="width: 82%;margin-left: 15px;margin-top: 5px;" class="btn btn-default">保存数据</button>
-            <button type="button" style="width: 82%;margin-left: 15px;margin-top: 5px;" class="btn btn-default">开始采集</button>
-            <button type="button" style="width: 82%;margin-left: 15px;margin-top: 5px;" class="btn btn-default">停止采集</button>
+            <button type="button" style="width: 82%;margin-left: 15px;margin-top: 5px;" class="btn btn-default" id="connect_websocket">打开连接</button>
+            <button type="button" style="width: 82%;margin-left: 15px;margin-top: 5px;" class="btn btn-default" id = "close_websocket">关闭连接</button>
+            <button type="button" style="width: 82%;margin-left: 15px;margin-top: 5px;"disabled class="btn btn-default" id="view_chart">查看图表</button>
+            <button type="button" style="width: 82%;margin-left: 15px;margin-top: 5px;" class="btn btn-default" id="view_data">查看数据</button>
+            <button type="button" style="width: 82%;margin-left: 15px;margin-top: 5px;" class="btn btn-default" id="send_message">开始采集</button>
+            <button type="button" style="width: 82%;margin-left: 15px;margin-top: 5px;" class="btn btn-default" id="stop">停止采集</button>
         </div>
+        <button type="button" style="width: 82%;margin-left: 15px;margin-top: 5px;" class="btn btn-default">
+                <a id="test12" onclick="clickDownload(this)"   href="#">保存数据</a>
+        </button>
+    </div>
+    <div class="lt-1_3-1 titleDiv table_out" id = "c3_1" style="">
+        <table class="table tableTop table-hover">
+            <thead>
+            <tr class="tableTh">
+                <th>ID</th>
+                <th>通道1圈数值</th>
+                <th>通道1角度值</th>
+                <th>通道2圈数值</th>
+                <th>通道2角度值</th>
+            </tr>
+            </thead>
+
+            <tbody id="DataBits">
+
+            </tbody>
+        </table>
     </div>
     <div class="lt-1_3"  id="c1">
         <div id="mountNode"></div>
@@ -82,11 +136,37 @@
         <div id="mountNode_2"></div>
     </div>
     <div class="lt-1_5">
-        <div style="float: left;border:1px solid #000;width: 46%;height: 90%;margin-left: 15px;margin-top: 15px;">
-
+        <div style="float: left;width: 46%;height: 90%;margin-left: 15px;margin-top: 15px;">
+            <div style="color: #31b0d5;float: left;width: 40%;height:50%;margin-left: 5px;text-align: center">
+                <h1  style="font-size: 20px">通道1</h1>
+                <h1  style="font-size: 20px">圈数值</h1>
+            </div>
+            <div style="color: #31b0d5;float: left;width: 55%;height:50%;margin-left: 5px;text-align: center">
+                <h1 style="font-size: 60px;" id="one_value"></h1>
+            </div>
+            <div style="color: #3e8f3e;float: left;width: 40%;height:50%;margin-left: 5px;text-align: center">
+                <h1  style="font-size: 20px">通道2</h1>
+                <h1  style="font-size: 20px">圈数值</h1>
+            </div>
+            <div style="color: #3e8f3e;float: left;width: 55%;height:50%;margin-left: 5px;text-align: center">
+                <h1 style="font-size: 60px;" id="two_value"></h1>
+            </div>
         </div>
-        <div style="float: right;border:1px solid #000;width: 46%;height: 90%;margin-right: 15px;margin-top: 15px;">
-
+        <div style="float: right;width: 46%;height: 90%;margin-right: 15px;margin-top: 15px;">
+            <div style="color: #31b0d5;float: left;width: 40%;height:50%;margin-left: 5px;text-align: center">
+                <h1  style="font-size: 20px">通道1</h1>
+                <h1  style="font-size: 20px">分辨率</h1>
+            </div>
+            <div style="color: #31b0d5;float: left;width: 55%;height:50%;margin-left: 5px;text-align: center">
+                <h1 style="font-size: 60px;" id="three_value"></h1>
+            </div>
+            <div style="color: #3e8f3e;float: left;width: 40%;height:50%;margin-left: 5px;text-align: center">
+                <h1  style="font-size: 20px">通道2</h1>
+                <h1  style="font-size: 20px">分辨率</h1>
+            </div>
+            <div style="color: #3e8f3e;float: left;width: 55%;height:50%;margin-left: 5px;text-align: center">
+                <h1 style="font-size: 60px;" id="four_value"></h1>
+            </div>
         </div>
     </div>
 
@@ -96,23 +176,17 @@
 <script src="../static/jquery-1.11.3/jquery.js"></script>
 <script src="../static/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
 <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g2-3.5.1/dist/g2.min.js"></script>
+<script src="../static/js/alert_bootstrap.js"></script>
 <script>
+    // 定义数组接收数据，实现查看数据下载数据
+    var data_one = [];var data_two = [];var data_three = [];var data_four = [];
     // 图表数据初始化
     var data = [];var chart = new G2.Chart({
         container: 'mountNode',
         forceFit: true,
         width : 300, // 指定图表宽度
         height : 350 // 指定图表高度
-    });chart.source(data, {time: {
-            alias: '时间',
-            tickCount: 10,
-            nice: false
-        }, temperature: {
-            alias: '数据',
-            min: 0,
-            type:'linear'
-
-        }, type: {
+    });chart.source(data, {time: {alias: '时间', tickCount: 10, nice: false}, temperature: {alias: '数据', min: 0, type:'linear'}, type: {
             type: 'cat'
         }});chart.line().position('time*temperature').color('type', ['#ff7f0e', '#2ca02c']).shape('smooth').size(2);chart.render();
     var data_2 = [];var chart_2 = new G2.Chart({
@@ -120,22 +194,12 @@
         forceFit: true,
         width : 300, // 指定图表宽度
         height : 350 // 指定图表高度
-    });chart_2.source(data_2, {time: {
-            alias: '时间',
-            tickCount: 10,
-            nice: false
-        }, temperature: {
-            alias: '数据',
-            min: 0,
-            type:'linear'
-
-        }, type: {
+    });chart_2.source(data_2, {time: {alias: '时间', tickCount: 10, nice: false}, temperature: {alias: '数据', min: 0, type:'linear'}, type: {
             type: 'cat'
         }});chart_2.line().position('time*temperature').color('type', ['#DC143C','#4169E1']).shape('smooth').size(2);chart_2.render();
 
-        openSocket()
-
-        function openSocket() {
+    openSocket()
+    function openSocket() {
         /*创建socket连接*/
         var socket = new WebSocket("ws://" + window.location.host + "/port_number");
         socket.onopen = function () {
@@ -160,7 +224,303 @@
         };
     }
 
+    // 打开串口
+    $("#open_1").click(function () {
+        if($("#ComName").val() ==  "" || $("#ComName").val() == undefined || $("#ComName").val() == null){
+            showMsg("串口获取失败，请重新获取")
+        }else {
+            $.ajax({
+                "type": "POST",
+                "dataType": "json",
+                "url": "/open_serial_1",
+                "data": {"COM1": $("#ComName").val()},
+                "headers": {"X-CSRFtoken": getCookie("csrftoken")},
+                "success": function (data) {
+                    if (data.message == 0) {
+                        showMsg("串口已打开");
+                        $("#open_1").attr("disabled", "true");
+                        $("#ComName").attr("disabled", "true");
+                        $("#close_1").removeAttr("disabled")
+                    } else {
+                        showMsg("打开成功");
+                        $("#open_1").attr("disabled", "true");
+                        $("#ComName").attr("disabled", "true");
+                        $("#close_1").removeAttr("disabled")
+                    }
+                }, error: function () {
+                    showMsg("串口获取失败，请刷新页面")
+                }
+            })
+        }
+    });
+    // 关闭串口
+    $("#close_1").click(function () {
+        if($("#ComName").val() ==  "" || $("#ComName").val() == undefined || $("#ComName").val() == null){
+            showMsg("串口获取失败，请重新获取")
+        }else {
+            $.ajax({
+                "type": "POST",
+                "dataType": "json",
+                "url": "/close_serial_1",
+                "headers": {"X-CSRFtoken": getCookie("csrftoken")},
+                "success": function (data) {
+                    if (data.message == 0) {
+                        showMsg("串口已关闭");
+                        $("#close_1").attr("disabled", "true");
+                        $("#open_1").removeAttr("disabled")
+                        $("#ComName").removeAttr("disabled")
+                    } else {
+                        showMsg("串口未打开");
+                        $("#close_1").attr("disabled", "true");
+                        $("#open_1").removeAttr("disabled")
+                    }
+                }, error: function () {
+                    showMsg("串口获取失败，请刷新页面")
+                }
+            })
+        }
+    });
 
+    var time = 0;
+    // 收发数据
+    $(function () {
+        $('#connect_websocket').click(function () {
+            if (window.s) {
+                window.s.close()
+            }
+            // 创建socket连接
+            var socket = new WebSocket("ws://" + window.location.host + "/gather");
+            socket.onopen = function () {
+                showMsg("连接成功")
+                $("#connect_websocket").attr("disabled", "true");
+                $("#close_websocket").removeAttr("disabled")
+            };
+            socket.onmessage = function (e) {
+                if (e.data == "0"){
+                    showMsg("串口未打开")
+                }else {
+                    //打印出服务端返回过来的数据
+                    var str = excludeSpecial(e.data);
+                    var data_message =  str.split(',');
+                    data_one.push(data_message[0]);
+                    data_two.push(data_message[2]);
+                    data_three.push(data_message[1]);
+                    data_four.push(data_message[3]);
+                    $("#one_value").empty();
+                    $("#two_value").empty();
+                    $("#three_value").empty();
+                    $("#four_value").empty();
+                    $("#one_value").html(data_message[0])
+                    $("#two_value").html(data_message[2])
+                    $("#three_value").html(data_message[1])
+                    $("#four_value").html(data_message[3])
+                    time=time+1;
+                    var temperature1 = e.data;
+                    if (data.length >= 300) {
+                        data.shift();
+                        data.shift();
+                    }
+                    if (data_2.length >= 300) {
+                        data_2.shift();
+                        data_2.shift();
+                    }
+                    data.push({
+                        time: time,
+                        temperature: data_message[0],
+                        type: '通道1圈数值'
+                    });
+                    data.push({
+                        time: time,
+                        temperature: data_message[2],
+                        type: '通道2圈数值'
+                    });
+                    data_2.push({
+                        time: time,
+                        temperature: data_message[1],
+                        type: '通道1分辨率'
+                    });
+                    data_2.push({
+                        time: time,
+                        temperature: data_message[3],
+                        type: '通道2分辨率'
+                    });
+                    chart.changeData(data);
+                    chart_2.changeData(data_2);
+                }
+            }
+            //$('#messagecontainer').prepend('<p>' + e.data + '</p>');
+
+            // Call onopen directly if socket is already open
+            if (socket.readyState == WebSocket.OPEN) socket.onopen();
+            window.s = socket;
+        });
+        // 采集数据
+        $('#send_message').click(function () {
+            //如果未连接到websocket
+            if (!window.s) {
+                showMsg("未打开连接.");
+            }else{
+                var dataMessage = [];
+                /*
+                *dataMessage[0]
+                *双连续：1
+                *双定次：2
+                *单连续：3
+                *单定次：4
+                */
+                clera_data()
+                $("#send_message").attr("disabled", "true");
+                $("#close_websocket").attr("disabled", "true");
+                if($("input[name='options']:checked").val()==1){
+                    // 双通道
+                    if($("input[name='options2']:checked").val()==3){
+                        // 连续
+                        dataMessage.push(1)
+                        window.s.send(dataMessage);//通过websocket发送数据
+                    }else if ($("input[name='options2']:checked").val()==4) {
+                        // 定次
+                        if($("#next").val()>0 && $("#next").val()<65536){
+                            dataMessage.push(2)
+                            dataMessage.push($("#next").val())
+                            window.s.send(dataMessage);//通过websocket发送数据
+                        }else{
+                            showMsg("定次区间必须在1-65535中")
+                        }
+
+                    }else{
+                        // 没选择
+                        showMsg("请选择采集方式")
+                    }
+                }else if ($("input[name='options']:checked").val()==2) {
+                    // 单通道
+                    if($("input[name='options2']:checked").val()==3){
+                        // 连续
+                        dataMessage.push(3)
+                        window.s.send(dataMessage);//通过websocket发送数据
+                    }else if ($("input[name='options2']:checked").val()==4) {
+                        // 定次
+                        if($("#next").val()>0 && $("#next").val()<65536){
+                            dataMessage.push(4)
+                            dataMessage.push($("#next").val())
+                            window.s.send(dataMessage);//通过websocket发送数据
+                        }else{
+                            showMsg("定次区间必须在1-65535中")
+                        }
+                    }else{
+                        // 没选择
+                        showMsg("请选择采集方式")
+                    }
+                }else {
+                    showMsg("请选择采集通道")
+                }
+                //clera_data();
+            }
+        });
+
+        // 关闭websocket
+        $('#close_websocket').click(function () {
+            if (window.s) {
+                window.s.close();//关闭websocket
+                showMsg('连接关闭');
+                $("#close_websocket").attr("disabled", "true");
+                $("#connect_websocket").removeAttr("disabled")
+            }
+        });
+    });
+
+    // 停止采集
+    $("#stop").click(function () {
+        $.ajax({
+            type:"POST",
+            dataType:"json",
+            url:"/stop",
+            headers:{"X-CSRFtoken": getCookie("csrftoken")},
+            success:function (data) {
+                if (data.message==1){
+                    showMsg("停止成功")
+                    $("#send_message").removeAttr("disabled")
+                    $("#close_websocket").removeAttr("disabled")
+                }else {
+                    $("#send_message").removeAttr("disabled")
+                    $("#close_websocket").removeAttr("disabled")
+                    showMsg("已经停止")
+                }
+            },error:function () {
+                showMsg("异常，停止失败，请刷新页面重新操作")
+            }
+
+        })
+    });
+
+    // 查看数据
+     $("#view_data").click(function(){
+        $("#DataBits").html("")
+        $("#view_data").attr("disabled", "true");
+        $("#view_chart").removeAttr("disabled")
+        $("#mountNode").hide()
+        $("#mountNode_2").hide()
+        $("#c3_1").show()
+        var str = "";
+        for(var i=0;i<data_one.length;i++){
+            str = str+"<tr class='tableTh'><td>"+(i+1)+"</td><td>"+data_one[i]+"</td><td>"+data_two[i]+"</td><td>"+data_three[i]+"</td><td>"+data_four[i]+"</td></tr>"
+        }
+        $("#DataBits").append(str)
+    })
+
+        // 查看图表
+    $("#view_chart").click(function(){
+        $("#view_chart").attr("disabled", "true");
+        $("#view_data").removeAttr("disabled")
+        $("#mountNode").show()
+        $("#mountNode_2").show()
+        $("#c3_1").hide()
+    })
+
+        // 下载数据
+    function clickDownload(aLink)
+    {
+        init_lt()
+        var str = "通道1圈数值,通道1角度值,通道2圈数值,通道2角度值\n";
+        for(var i=0;i<data_one.length;i++){
+            str = str+data_one[i]+","+data_two[i]+","+data_three[i]+","+data_four[i]+"\n";
+        }
+        str =  encodeURIComponent(str);
+        aLink.href = "data:text/csv;charset=utf-8,\ufeff"+str;
+    }
+     function init_lt(){
+        var myDate = new Date();
+        var dateTime = myDate.toLocaleString('chinese', { hour12: false });
+        $("#test12").attr("download",""+dateTime+".csv")
+    }
+
+    // 初始化文件数组
+    function clera_data() {
+        data_one = []
+        data_two = []
+        data_three = []
+        data_four = []
+    }
+
+    // Cookie.js
+    function setCookie(name,value,path) {
+        var Days = 2; //此 cookie 将被保存2天
+        var exp  = new Date();    //new Date("December 31, 9998");
+        exp.setTime(exp.getTime() + Days*24*60*60*1000);
+        if((typeof value == "string")&&(value.length > 0)){
+            document.cookie = name + "="+ escape(value) + ";expires=" + exp.toGMTString()+";path=/";
+        }else{
+            var exp = new Date();
+            exp.setTime(exp.getTime() - 1);
+            var cval=getCookie(name);
+            if(cval!=null)
+                document.cookie=name +"="+cval+";expires="+exp.toGMTString()+";path=/";
+        }
+    }
+    function getCookie(name) {
+        // (^| )name=([^;]*)(;|$),match[0]为与整个正则表达式匹配的字符串，match[i]为正则表达式捕获数组相匹配的数组；
+        var arr = document.cookie.match(new RegExp("(^| )"+name+"=([^;]*)(;|$)"));if(arr != null) {
+            return unescape(arr[2]);
+        }return null;}
     //去掉字符串中的特殊字符
     var excludeSpecial = function(s) {
         // 去掉转义字符
@@ -171,7 +531,6 @@
         s=s.replace(/\[|]/g,'');
         return s;
     };
-
 </script>
 </body>
 </html>
