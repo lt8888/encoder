@@ -105,7 +105,7 @@ def gather(request):
                     body = "0"+body
                 elif len(body) == 2:
                     body = "00" + body
-                else:
+                elif len(body) == 1:
                     body = "000" + body
                 print(body)
                 lrc.append(int(body[0:2], 16))
@@ -124,7 +124,6 @@ def gather(request):
                 DOpenPort(request, data)
             else:
                 # 单通道定次
-                # 双通道定次
                 number = hex(int(data_s2[1]))
                 head = "3A0110200005010101"
                 trail = "0D0A"
@@ -134,7 +133,7 @@ def gather(request):
                     body = "0"+body
                 elif len(body) == 2:
                     body = "00" + body
-                else:
+                elif len(body) == 1:
                     body = "000" + body
                 print(body)
                 lrc.append(int(body[0:2], 16))

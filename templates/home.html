@@ -5,6 +5,8 @@
     <title>Encoder Integrated Station</title>
     <meta name="viewport" content="width=device-width,user-scalable=no,
     initial=1.0,maximum-scale-1.0,minimum-scale=1.0" />
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=8">
     <link href="../static/bootstrap-3.3.7-dist/css/bootstrap.css" rel="stylesheet" />
 </head>
 <style>
@@ -112,9 +114,9 @@
             <button type="button" style="width: 82%;margin-left: 15px;margin-top: 5px;" class="btn btn-default" id="send_message">开始采集</button>
             <button type="button" style="width: 82%;margin-left: 15px;margin-top: 5px;" class="btn btn-default" id="stop">停止采集</button>
         </div>
-        <button type="button" style="width: 82%;margin-left: 15px;margin-top: 5px;" class="btn btn-default" id="baocun">
-            <a id="test12" onclick="clickDownload(this)"   href="#">保存数据</a>
-        </button>
+        <a id="test12" onclick="clickDownload(this)"   href="#"style="width: 82%;margin-left: 15px;margin-top: 5px;" class="btn btn-default">
+            保存数据
+        </a>
     </div>
     <div class="lt-1_3s">
         <div class="lt-1_3-1 titleDiv table_out" id = "c3_1" style="">
@@ -123,9 +125,9 @@
                 <tr class="tableTh">
                     <th>ID</th>
                     <th>通道1圈数值</th>
-                    <th>通道1角度值</th>
+                    <th>通道1分辨率</th>
                     <th>通道2圈数值</th>
-                    <th>通道2角度值</th>
+                    <th>通道2分辨率</th>
                 </tr>
                 </thead>
 
@@ -473,7 +475,7 @@
         $("#c3_1").show()
         var str = "";
         for(var i=0;i<data_one.length;i++){
-            str = str+"<tr class='tableTh'><td>"+(i+1)+"</td><td>"+data_one[i]+"</td><td>"+data_two[i]+"</td><td>"+data_three[i]+"</td><td>"+data_four[i]+"</td></tr>"
+            str = str+"<tr class='tableTh'><td>"+(i+1)+"</td><td>"+data_one[i]+"</td><td>"+data_three[i]+"</td><td>"+data_two[i]+"</td><td>"+data_four[i]+"</td></tr>"
         }
         $("#DataBits").append(str)
     })
