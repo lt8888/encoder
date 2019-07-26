@@ -493,9 +493,9 @@
     function clickDownload(aLink)
     {
         init_lt()
-        var str = "通道1圈数值,通道1角度值,通道2圈数值,通道2角度值\n";
+        var str = "通道1圈数值,通道1分辨率,通道2圈数值,通道2分辨率\n";
         for(var i=0;i<data_one.length;i++){
-            str = str+data_one[i]+","+data_two[i]+","+data_three[i]+","+data_four[i]+"\n";
+            str = str+data_one[i]+","+data_three[i]+","+data_two[i]+","+data_four[i]+"\n";
         }
         str =  encodeURIComponent(str);
         aLink.href = "data:text/csv;charset=utf-8,\ufeff"+str;
